@@ -1,0 +1,31 @@
+[{
+  "country": "AR",
+  "quantity": 10,
+  "RMC": "M12345761"
+},
+  {
+    "country": "AM",
+    "quantity": 5,
+    "RMC": "M12345559"
+  },
+  {
+    "country": "BE",
+    "quantity": 45,
+    "RMC": "M67345582"
+  },
+  {
+    "country": "CA",
+    "quantity": 17,
+    "RMC": "M67345582"
+  },
+  {
+    "country": "DE",
+    "quantity": 8,
+    "RMC": "M96368543"
+  },
+  {
+    "country": "GR",
+    "quantity": 22,
+    "RMC": "M96368543"
+  }
+]

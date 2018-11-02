@@ -1,28 +1,36 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <div class="container-fluid">
+            <CountryFilter/>
+            <RmcFilter/>
+            <Grid :items="items"/>
+        </div>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import CountryFilter from './components/filters/countryFilter';
+    import RmcFilter from './components/filters/rmcFilter';
+    import Grid from './components/grid/grid';
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'app',
+        components: {
+            CountryFilter,
+            RmcFilter,
+            Grid
+        },
+        data: () => ({
+            items : []
+        }),
+        mounted() {
+            this.axios.get('data/grid_data.json').then(({data}) => {
+                this.items = data;
+            })
+        }
+    }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
