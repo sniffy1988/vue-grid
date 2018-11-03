@@ -9,6 +9,7 @@ const store = new VueEx.Store({
     },
     mutations: {
         addFilter (state, payload) {
+            //todo remove filter if value is all;
             let {filters} = state;
             let newFilters;
             let oldFilter  = filters.find((item) => {
