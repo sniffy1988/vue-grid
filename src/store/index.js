@@ -21,37 +21,7 @@ const store = new VueEx.Store({
     },
     mutations: {
         addFilter(state, payload) {
-            //todo remove filter if value is all;
-            let {filters} = state;
-            let newFilters;
-            let oldFilter = filters.find((item) => {
-                return item.name === payload.name;
-            });
-            if (oldFilter !== undefined) {
-                newFilters = filters.filter((item) => {
-                    return item.name !== payload.name;
-                });
-            }
-
-            if (newFilters) {
-                state.filters = [...newFilters, {
-                    value: payload.value,
-                    name: payload.name
-                }];
-            } else {
-                if (state.filters.length) {
-                    state.filters = [...state.filters, {
-                        value: payload.value,
-                        name: payload.name
-                    }];
-                } else {
-                    state.filters = [{
-                        value: payload.value,
-                        name: payload.name
-                    }];
-                }
-            }
-
+            state.filters = payload;
         },
         setGrid(state, payload) {
             state.grid = payload;
@@ -87,8 +57,20 @@ const store = new VueEx.Store({
                 }
             }
         },
-        addFilter({commit}, payload) {
-            commit('addFilter', payload);
+        addFilter({commit, state}, payload) {
+            let resultFilters = [];
+            let oldFilters = state.filters;
+            if(!oldFilters.length) {
+                resultFilters = {
+                    name: payload.name,
+                    value: payload.value
+                }
+            } else {
+               //todo fix add logic for add new item and change items if value is exist and remove if value is all;
+            }
+            console.log('payload: ', payload);
+            console.log('oldFilters: ', oldFilters);
+            commit('addFilter', resultFilters);
         },
         filterGrid({commit, state}) {
             const {filteredGrid, filters} = state;
