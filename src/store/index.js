@@ -69,7 +69,7 @@ const store = new VueEx.Store({
                 });
 
                 let rmcItems = data.map((item)=> {
-                    return item.RMC;
+                    return item.rmc;
                 });
 
                 commit('setCountryFilters', countries);
