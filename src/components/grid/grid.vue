@@ -1,13 +1,17 @@
 <template>
     <div class="">
-        <table>
+        <table class="ui celled sortable selectable table">
+            <thead>
             <tr>
-                <th :key="index" @click="sortGrid(key.name)" v-for="(key, index) in columns">
-                    {{key.name | capitalize}} {{key.sortFilter}}
+                <th class=""
+                    :class="{'sorted': true, 'ascending' : key.sortFilter === 'asc', 'descending' : key.sortFilter === 'desc'}"
+                    :key="index" @click="sortGrid(key.name)" v-for="(key, index) in columns">
+                    {{key.name | capitalize}}
                 </th>
             </tr>
+            </thead>
             <template v-if="items.length">
-                <tr  :key="index" v-for="(columns, index) in items">
+                <tr :key="index" v-for="(columns, index) in items" @click="handleRowClick">
                     <Cell :key="index" v-for="(item, key, index) in columns" :item="item" :type="key"/>
                 </tr>
             </template>
@@ -45,24 +49,14 @@
             ...mapGetters(['filters', 'columns']),
         },
         methods: {
-            ...mapActions(['sortGrid'])
+            ...mapActions(['sortGrid']),
+            handleRowClick() {
+                console.log('show popup');
+            }
         }
     }
 </script>
 
 <style scoped>
-    table {
-        width: 100%;
-        table-layout: fixed;
-    }
 
-    th {
-        padding: 5px;
-        cursor: pointer;
-        background: #999;
-    }
-
-    td {
-        padding: 5px;
-    }
 </style>

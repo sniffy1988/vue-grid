@@ -1,10 +1,10 @@
 <template>
-    <div id="app">
-        <div class="container-fluid">
+    <div class="ui container">
+        <div class="filters-block ui form">
             <GridFilter :options="countriesItems" name="Country"/>
             <GridFilter :options="rmcItems" name="RMC"/>
-            <Grid :items="items"/>
         </div>
+        <Grid :items="items"/>
     </div>
 </template>
 
@@ -19,8 +19,7 @@
             Grid,
             GridFilter
         },
-        data: () => ({
-        }),
+        data: () => ({}),
         computed: {
             ...mapGetters({
                 items: 'grid',
@@ -28,12 +27,18 @@
                 rmcItems: 'rmcFilters'
             })
         },
-        mounted(){
+        mounted() {
             this.$store.dispatch('loadGrid');
         }
     }
 </script>
 
 <style>
+    .filters-block {
+        display: flex;
+    }
 
+    .filters-block > div {
+        margin-right: 10px !important;
+    }
 </style>

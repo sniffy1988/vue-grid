@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="field">
         <label>
             {{name}}
-            <select @change="handleChange">
-                <option value="">All {{labelName}}</option>
-                <option v-for="option in opts" :key="option.guid" :value="option.value">{{option.name}}</option>
-            </select>
         </label>
+        <select @change="handleChange">
+            <option value="">All {{labelName}}</option>
+            <option v-for="option in opts" :key="option.guid" :value="option.value">{{option.name}}</option>
+        </select>
     </div>
 </template>
 
@@ -66,3 +66,9 @@
         }
     }
 </script>
+
+<style scoped>
+    .field {
+        margin-right: 10px;
+    }
+</style>
