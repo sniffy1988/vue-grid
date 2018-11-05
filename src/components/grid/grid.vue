@@ -8,9 +8,19 @@
                     {{key.name | capitalize}} {{key.sortFilter}}
                 </th>
             </tr>
-            <tr :key="index" v-for="(columns, index) in items">
-                <Cell :key="index" v-for="(item, key, index) in columns" :item="item" :type="key"/>
-            </tr>
+            <template v-if="items.length">
+                <tr  :key="index" v-for="(columns, index) in items">
+                    <Cell :key="index" v-for="(item, key, index) in columns" :item="item" :type="key"/>
+                </tr>
+            </template>
+
+            <template v-else>
+                <tr>
+                    <td colspan="3">
+                        Sorry, no items
+                    </td>
+                </tr>
+            </template>
         </table>
     </div>
 </template>
