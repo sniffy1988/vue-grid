@@ -34,7 +34,6 @@ const modal = {
                 templated_string = templated_string.replace('#RMC_STRING#', `rmc: ${payload.rmc}`);
                 templated_string = templated_string.replace('#PRICE_STRING#', '$1250');
                 console.log('templated_string: ', templated_string);
-                data.template = templated_string;
                 commit('changeModal');
                 commit('setModal', data);
             }
