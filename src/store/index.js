@@ -7,6 +7,7 @@ Vue.use(VueEx);
 const store = new VueEx.Store({
     state: {
         filters: [],
+        sorters: [],
         grid: [],
         columns: [],
         filteredGrid: []
@@ -100,6 +101,7 @@ const store = new VueEx.Store({
             });
         },
         sortGrid({commit}, payload) {
+            console.log('PAYLOAD', payload);
             commit('changeGrid', {
                 type: 'SORT',
                 sorters: []

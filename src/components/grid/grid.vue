@@ -4,7 +4,7 @@
         {{columns}}
         <table>
             <tr>
-                <th :key="index" @click="sortColumns(index)" v-for="(key, index) in columns">
+                <th :key="index" @click="sortColumns(key.name)" v-for="(key, index) in columns">
                     {{key.name | capitalize}} {{key.sortFilter}}
                 </th>
             </tr>
@@ -17,7 +17,7 @@
 
 <script>
     import sort from '../../helpers/sortBy';
-    import {mapGetters} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
     import Cell from './cell';
 
     export default {
@@ -38,23 +38,26 @@
             ...mapGetters(['filters', 'columns']),
         },
         methods: {
+            ...mapActions(['sortGrid']),
+
             sortColumns(index) {
-                let {sortFilter, name} = this.columns[index];
-                switch (sortFilter) {
-                    case '':
-                        sortFilter = 'asc';
-                        break;
-                    case 'asc':
-                        sortFilter = 'desc';
-                        break;
-                    case 'desc':
-                        sortFilter = '';
-                        break;
-                }
-                let newColumns = [...this.columns];
-                newColumns[index] = {name, sortFilter};
-                this.columns = newColumns;
-                this.filteredItems = sort(this.filteredItems, this.columns);
+                this.sortGrid(index);
+                // let {sortFilter, name} = this.columns[index];
+                // switch (sortFilter) {
+                //     case '':
+                //         sortFilter = 'asc';
+                //         break;
+                //     case 'asc':
+                //         sortFilter = 'desc';
+                //         break;
+                //     case 'desc':
+                //         sortFilter = '';
+                //         break;
+                // }
+                // let newColumns = [...this.columns];
+                // newColumns[index] = {name, sortFilter};
+                // this.columns = newColumns;
+                // this.filteredItems = sort(this.filteredItems, this.columns);
             }
         }
     }
