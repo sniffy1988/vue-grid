@@ -1,28 +1,47 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div class="ui container">
+        <div class="filters-block ui form">
+            <GridFilter :options="countriesItems" name="Country"/>
+            <GridFilter :options="rmcItems" name="RMC"/>
+        </div>
+        <Grid :items="items"/>
+        <Modal/>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import Grid from './components/grid/grid';
+    import GridFilter from './components/filters/filter';
+    import Modal from './components/modal/modalGrid';
+    import {mapGetters} from 'vuex';
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'app',
+        components: {
+            Grid,
+            GridFilter,
+            Modal
+        },
+        data: () => ({}),
+        computed: {
+            ...mapGetters({
+                items: 'grid',
+                countriesItems: 'countryFilters',
+                rmcItems: 'rmcFilters'
+            })
+        },
+        mounted() {
+            this.$store.dispatch('loadGrid');
+        }
+    }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    .filters-block {
+        display: flex;
+    }
+
+    .filters-block > div {
+        margin-right: 10px !important;
+    }
 </style>
