@@ -10,11 +10,11 @@
                 </th>
             </tr>
             </thead>
-            <template v-if="items.length">
-                <tr :key="index" v-for="(columns, index) in items" @click="handleRowClick">
+            <tbody v-if="items.length">
+                <tr :key="index" v-for="(columns, index) in items" @click="showPopup">
                     <Cell :key="index" v-for="(item, key, index) in columns" :item="item" :type="key"/>
                 </tr>
-            </template>
+            </tbody>
 
             <template v-else>
                 <tr>
@@ -49,10 +49,7 @@
             ...mapGetters(['filters', 'columns']),
         },
         methods: {
-            ...mapActions(['sortGrid']),
-            handleRowClick() {
-                console.log('show popup');
-            }
+            ...mapActions(['sortGrid', 'showPopup']),
         }
     }
 </script>

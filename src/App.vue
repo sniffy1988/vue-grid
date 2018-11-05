@@ -5,19 +5,22 @@
             <GridFilter :options="rmcItems" name="RMC"/>
         </div>
         <Grid :items="items"/>
+        <Modal/>
     </div>
 </template>
 
 <script>
     import Grid from './components/grid/grid';
     import GridFilter from './components/filters/filter';
+    import Modal from './components/modal/modalGrid';
     import {mapGetters} from 'vuex';
 
     export default {
         name: 'app',
         components: {
             Grid,
-            GridFilter
+            GridFilter,
+            Modal
         },
         data: () => ({}),
         computed: {
