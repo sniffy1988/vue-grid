@@ -3,7 +3,7 @@
         <label>
             {{name}}
             <select @change="handleChange">
-                <option>All {{labelName}}</option>
+                <option value="">All {{labelName}}</option>
                 <option v-for="option in opts" :key="option.guid" :value="option.value">{{option.name}}</option>
             </select>
         </label>

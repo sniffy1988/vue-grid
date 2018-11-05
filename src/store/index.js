@@ -9,7 +9,8 @@ Vue.use(VueEx);
 const store = new VueEx.Store({
     state: {
         filters: [],
-        sorters: [],
+        countryFilters: [],
+        rmcFilters: [],
         grid: [],
         columns: [],
         filteredGrid: []
@@ -17,7 +18,9 @@ const store = new VueEx.Store({
     getters: {
         grid: ({filteredGrid}) => filteredGrid,
         filters: ({filters}) => filters,
-        columns: ({columns}) => columns
+        columns: ({columns}) => columns,
+        countryFilters: ({countryFilters}) => countryFilters,
+        rmcFilters: ({rmcFilters}) => rmcFilters,
     },
     mutations: {
         addFilter(state, payload) {
@@ -26,6 +29,12 @@ const store = new VueEx.Store({
         setGrid(state, payload) {
             state.grid = payload;
             state.filteredGrid = payload;
+        },
+        setCountryFilters(state, payload) {
+            state.countryFilters = payload;
+        },
+        setRmcFilters(state, payload) {
+            state.rmcFilters = payload;
         },
         changeGrid(state, payload) {
             state.filteredGrid = payload;
@@ -43,7 +52,6 @@ const store = new VueEx.Store({
 
                 commit('setGrid', data);
 
-                //generate columns
                 const firstRow = data[0];
                 if (firstRow) {
                     let columnsPayload = Object.keys(firstRow).map((item) => {
@@ -55,30 +63,37 @@ const store = new VueEx.Store({
 
                     commit('setColumns', columnsPayload);
                 }
+
+                let countries = data.map((item) => {
+                    return item.country;
+                });
+
+                let rmcItems = data.map((item)=> {
+                    return item.RMC;
+                });
+
+                commit('setCountryFilters', countries);
+                commit('setRmcFilters', rmcItems);
             }
         },
-        addFilter({commit, state}, payload) {
+        addFilter({commit, state, dispatch}, payload) {
             let resultFilters = [];
             let oldFilters = state.filters;
-            if(!oldFilters.length) {
-                resultFilters = {
+            resultFilters = oldFilters.filter((item) => {
+                return item.name !== payload.name;
+            });
+            if (payload.value !== '') {
+                resultFilters = [...resultFilters, {
                     name: payload.name,
                     value: payload.value
-                }
-            } else {
-               //todo fix add logic for add new item and change items if value is exist and remove if value is all;
+                }];
             }
-            console.log('payload: ', payload);
-            console.log('oldFilters: ', oldFilters);
+
             commit('addFilter', resultFilters);
+            dispatch('changeGrid');
         },
-        filterGrid({commit, state}) {
-            const {filteredGrid, filters} = state;
-            const newGrid = filterGrid(filteredGrid, filters);
-            commit('changeGrid', newGrid);
-        },
-        sortGrid({commit, state}, payload) {
-            let {columns, filteredGrid} = state;
+        sortGrid({commit, state, dispatch}, payload) {
+            let {columns} = state;
             let newColumns = columns.map((item) => {
                if(item.name === payload) {
                    let {sortFilter} = item;
@@ -93,9 +108,14 @@ const store = new VueEx.Store({
                }
                return item;
             });
-            const newGrid = sort(filteredGrid, newColumns);
 
             commit('setColumns', newColumns);
+            dispatch('changeGrid');
+        },
+        changeGrid({state, commit}) {
+            const {grid, columns, filters} = state;
+            let newGrid = filterGrid(grid, filters);
+            newGrid = sort(newGrid, columns);
             commit('changeGrid', newGrid);
         }
     }

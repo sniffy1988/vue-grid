@@ -23,18 +23,10 @@
         }),
         computed: {
             ...mapGetters({
-                items: 'grid'
-            }),
-            countriesItems() {
-                return this.items.map((item) => {
-                    return item.country
-                })
-            },
-            rmcItems() {
-                return this.items.map((item) => {
-                    return item.RMC;
-                })
-            }
+                items: 'grid',
+                countriesItems: 'countryFilters',
+                rmcItems: 'rmcFilters'
+            })
         },
         mounted(){
             this.$store.dispatch('loadGrid');
