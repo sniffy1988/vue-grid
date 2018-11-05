@@ -1,7 +1,5 @@
 <template>
     <div class="">
-        {{filters}}
-        {{columns}}
         <table>
             <tr>
                 <th :key="index" @click="sortGrid(key.name)" v-for="(key, index) in columns">
