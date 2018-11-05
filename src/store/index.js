@@ -1,11 +1,20 @@
 import VueEx from 'vuex';
 import Vue from "vue";
+import  fetchGrid from '../helpers/fetchGrid';
 
 Vue.use(VueEx);
 
 const store = new VueEx.Store({
     state: {
         filters: [],
+        grid: [],
+        columns: [],
+        filteredGrid: []
+    },
+    getters: {
+        grid : ({filteredGrid})=> filteredGrid,
+        filters: ({filters}) => filters,
+        columns: ({columns}) => columns
     },
     mutations: {
         addFilter (state, payload) {
@@ -13,11 +22,11 @@ const store = new VueEx.Store({
             let {filters} = state;
             let newFilters;
             let oldFilter  = filters.find((item) => {
-               return item.name === payload.name; 
+               return item.name === payload.name;
             });
             if(oldFilter !== undefined) {
                 newFilters = filters.filter((item) => {
-                   return item.name !== payload.name; 
+                   return item.name !== payload.name;
                 });
             }
 
@@ -40,11 +49,43 @@ const store = new VueEx.Store({
                 }
             }
 
+        },
+        setGrid(state, payload) {
+            state.grid = payload;
+            state.filteredGrid = payload;
+        },
+        changeGrid(state, payload) {
+            switch (payload.type) {
+                case 'FILTER':
+                    console.log('filter');
+                    break;
+                case 'SORT':
+                    console.log('sort');
+                    break;
+            }
         }
     },
     actions: {
-        addFilter({commit, state}, payload) {
+        async loadGrid({commit}) {
+          const response = await fetchGrid();
+          if(response.status === 200) {
+              commit('setGrid', response.data);
+          }
+        },
+        addFilter({commit}, payload) {
             commit('addFilter', payload);
+        },
+        filterGrid({commit}, payload) {
+            commit('changeGrid', {
+               type: 'FILTER',
+               filters: []
+            });
+        },
+        sortGrid({commit}, payload) {
+            commit('changeGrid', {
+                type: 'SORT',
+                sorters: []
+            })
         }
     }
 });

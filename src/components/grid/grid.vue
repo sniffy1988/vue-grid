@@ -1,13 +1,14 @@
 <template>
     <div class="">
         {{filters}}
+        {{columns}}
         <table>
             <tr>
                 <th :key="index" @click="sortColumns(index)" v-for="(key, index) in columns">
                     {{key.name | capitalize}} {{key.sortFilter}}
                 </th>
             </tr>
-            <tr :key="index" v-for="(columns, index) in filteredItems">
+            <tr :key="index" v-for="(columns, index) in items">
                 <Cell :key="index" v-for="(item, key, index) in columns" :item="item" :type="key"/>
             </tr>
         </table>
@@ -16,6 +17,7 @@
 
 <script>
     import sort from '../../helpers/sortBy';
+    import {mapGetters} from 'vuex';
     import Cell from './cell';
 
     export default {
@@ -31,25 +33,20 @@
         },
         data: () => ({
             filteredItems: [],
-            columns: []
         }),
         computed: {
-            filters() {
-                console.log('this.$store.state: ', this.$store.state);
-                return this.$store.state.filters;
-            }
-        },
-        watch: {
-            items(val) {
-                this.filteredItems = val.slice();
-                let firstRow = this.filteredItems[0];
+            ...mapGetters(['filters']),
+            columns() {
+                const firstRow = this.items[0];
                 if (firstRow) {
-                    this.columns = Object.keys(firstRow).map((item) => {
+                    return Object.keys(firstRow).map((item) => {
                         return {
                             name: item,
                             sortFilter: ''
                         }
                     });
+                } else {
+                    return [];
                 }
             }
         },

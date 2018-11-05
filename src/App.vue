@@ -11,6 +11,7 @@
 <script>
     import Grid from './components/grid/grid';
     import GridFilter from './components/filters/filter';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'app',
@@ -19,9 +20,11 @@
             GridFilter
         },
         data: () => ({
-            items: []
         }),
         computed: {
+            ...mapGetters({
+                items: 'grid'
+            }),
             countriesItems() {
                 return this.items.map((item) => {
                     return item.country
@@ -33,10 +36,8 @@
                 })
             }
         },
-        mounted() {
-            this.axios.get('data/grid_data.json').then(({data}) => {
-                this.items = data;
-            })
+        mounted(){
+            this.$store.dispatch('loadGrid');
         }
     }
 </script>
