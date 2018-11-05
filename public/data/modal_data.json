@@ -1,9 +1,7 @@
-[
-  {
-    "title": "Confirmation",
-    "main_question": "Are you sure that your order will include:",
-    "templated_string": "Watches with #RMC_STRING# with price #PRICE_STRING#",
-    "button_cancel": "Cancel",
-    "button_ok": "Yes"
-  }
-]
+{
+  "title": "Confirmation",
+  "main_question": "Are you sure that your order will include:",
+  "templated_string": "Watches with #RMC_STRING# with price #PRICE_STRING#",
+  "button_cancel": "Cancel",
+  "button_ok": "Yes"
+}

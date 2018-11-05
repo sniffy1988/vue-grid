@@ -11,7 +11,7 @@
             </tr>
             </thead>
             <tbody v-if="items.length">
-                <tr :key="index" v-for="(columns, index) in items" @click="showPopup">
+                <tr :key="index" v-for="(columns, index) in items" @click="showPopup(columns)">
                     <Cell :key="index" v-for="(item, key, index) in columns" :item="item" :type="key"/>
                 </tr>
             </tbody>

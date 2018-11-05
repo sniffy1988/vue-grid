@@ -2,17 +2,22 @@
     <div class="ui dimmer modals page transition" :class="{'active visible' : isActive}">
         <div class="ui standard modal transition" :class="{'active visible' : isActive}">
             <div class="header">
-                Confirmation
+                {{modal.title}}
             </div>
             <div class="content">
-                {{modal}}
+                <p>
+                    {{modal.main_question}}
+                </p>
+                <p>
+                    {{modal.template}}
+                </p>
             </div>
             <div class="actions">
                 <button class="ui black deny button" @click="hideModal">
-                    Cancel
+                    {{modal.button_cancel}}
                 </button>
                 <button class="ui positive button" @click="hideModal">
-                    Yes
+                    {{modal.button_ok}}
                 </button>
             </div>
         </div>

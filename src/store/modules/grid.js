@@ -114,8 +114,8 @@ const grid = {
             newGrid = sort(newGrid, columns);
             commit('changeGrid', newGrid);
         },
-        showPopup({dispatch}) {
-            dispatch('changeModal');
+        showPopup({dispatch}, payload) {
+            dispatch('changeModal', payload);
         }
     }
 };
