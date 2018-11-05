@@ -2,6 +2,7 @@ import VueEx from 'vuex';
 import Vue from "vue";
 import fetchGrid from '../helpers/fetchGrid';
 import sort from '../helpers/sortBy';
+import filterGrid from '../helpers/filterGrid';
 
 Vue.use(VueEx);
 
@@ -89,11 +90,10 @@ const store = new VueEx.Store({
         addFilter({commit}, payload) {
             commit('addFilter', payload);
         },
-        filterGrid({commit}, payload) {
-            commit('changeGrid', {
-                type: 'FILTER',
-                filters: []
-            });
+        filterGrid({commit, state}) {
+            const {filteredGrid, filters} = state;
+            const newGrid = filterGrid(filteredGrid, filters);
+            commit('changeGrid', newGrid);
         },
         sortGrid({commit, state}, payload) {
             let {columns, filteredGrid} = state;
