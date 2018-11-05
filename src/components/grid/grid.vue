@@ -35,20 +35,7 @@
             filteredItems: [],
         }),
         computed: {
-            ...mapGetters(['filters']),
-            columns() {
-                const firstRow = this.items[0];
-                if (firstRow) {
-                    return Object.keys(firstRow).map((item) => {
-                        return {
-                            name: item,
-                            sortFilter: ''
-                        }
-                    });
-                } else {
-                    return [];
-                }
-            }
+            ...mapGetters(['filters', 'columns']),
         },
         methods: {
             sortColumns(index) {

@@ -1,6 +1,6 @@
 import VueEx from 'vuex';
 import Vue from "vue";
-import  fetchGrid from '../helpers/fetchGrid';
+import fetchGrid from '../helpers/fetchGrid';
 
 Vue.use(VueEx);
 
@@ -12,31 +12,31 @@ const store = new VueEx.Store({
         filteredGrid: []
     },
     getters: {
-        grid : ({filteredGrid})=> filteredGrid,
+        grid: ({filteredGrid}) => filteredGrid,
         filters: ({filters}) => filters,
         columns: ({columns}) => columns
     },
     mutations: {
-        addFilter (state, payload) {
+        addFilter(state, payload) {
             //todo remove filter if value is all;
             let {filters} = state;
             let newFilters;
-            let oldFilter  = filters.find((item) => {
-               return item.name === payload.name;
+            let oldFilter = filters.find((item) => {
+                return item.name === payload.name;
             });
-            if(oldFilter !== undefined) {
+            if (oldFilter !== undefined) {
                 newFilters = filters.filter((item) => {
-                   return item.name !== payload.name;
+                    return item.name !== payload.name;
                 });
             }
 
-            if(newFilters) {
+            if (newFilters) {
                 state.filters = [...newFilters, {
                     value: payload.value,
                     name: payload.name
                 }];
             } else {
-                if(state.filters.length) {
+                if (state.filters.length) {
                     state.filters = [...state.filters, {
                         value: payload.value,
                         name: payload.name
@@ -63,22 +63,40 @@ const store = new VueEx.Store({
                     console.log('sort');
                     break;
             }
+        },
+        setColumns: (state, payload) => {
+            state.columns = payload;
         }
     },
     actions: {
         async loadGrid({commit}) {
-          const response = await fetchGrid();
-          if(response.status === 200) {
-              commit('setGrid', response.data);
-          }
+            const response = await fetchGrid();
+            if (response.status === 200) {
+                let {data} = response;
+
+                commit('setGrid', data);
+
+                //generate columns
+                const firstRow = data[0];
+                if (firstRow) {
+                    let columnsPayload = Object.keys(firstRow).map((item) => {
+                        return {
+                            name: item,
+                            sortFilter: ''
+                        }
+                    });
+
+                    commit('setColumns', columnsPayload);
+                }
+            }
         },
         addFilter({commit}, payload) {
             commit('addFilter', payload);
         },
         filterGrid({commit}, payload) {
             commit('changeGrid', {
-               type: 'FILTER',
-               filters: []
+                type: 'FILTER',
+                filters: []
             });
         },
         sortGrid({commit}, payload) {
