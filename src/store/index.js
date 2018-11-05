@@ -1,6 +1,7 @@
 import VueEx from 'vuex';
 import Vue from "vue";
 import fetchGrid from '../helpers/fetchGrid';
+import sort from '../helpers/sortBy';
 
 Vue.use(VueEx);
 
@@ -56,19 +57,13 @@ const store = new VueEx.Store({
             state.filteredGrid = payload;
         },
         changeGrid(state, payload) {
-            switch (payload.type) {
-                case 'FILTER':
-                    console.log('filter');
-                    break;
-                case 'SORT':
-                    console.log('sort');
-                    break;
-            }
+            state.filteredGrid = payload;
         },
         setColumns: (state, payload) => {
             state.columns = payload;
         }
-    },
+    }
+    ,
     actions: {
         async loadGrid({commit}) {
             const response = await fetchGrid();
@@ -100,12 +95,26 @@ const store = new VueEx.Store({
                 filters: []
             });
         },
-        sortGrid({commit}, payload) {
-            console.log('PAYLOAD', payload);
-            commit('changeGrid', {
-                type: 'SORT',
-                sorters: []
-            })
+        sortGrid({commit, state}, payload) {
+            let {columns, filteredGrid} = state;
+            let newColumns = columns.map((item) => {
+               if(item.name === payload) {
+                   let {sortFilter} = item;
+                   if(sortFilter === '') {
+                       sortFilter = 'asc';
+                   } else if(sortFilter === 'asc') {
+                       sortFilter = 'desc';
+                   } else {
+                       sortFilter = '';
+                   }
+                   item.sortFilter = sortFilter;
+               }
+               return item;
+            });
+            const newGrid = sort(filteredGrid, newColumns);
+
+            commit('setColumns', newColumns);
+            commit('changeGrid', newGrid);
         }
     }
 });
